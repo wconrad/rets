@@ -34,10 +34,12 @@ module Rets
     end
 
     def use_cached_metadata
+      @stats.count("#{@stats_prefix}using_cached_metadata")
       @logger.info "Rets::Client: Use cached metadata"
     end
 
     def bad_cached_metadata(cached_metadata)
+      @stats.count("#{@stats_prefix}bad_cached_metadata")
       @logger.info cached_metadata ? "Rets::Client: Cached metadata out of date" : "Rets::Client: Cached metadata unavailable"
     end
   end
