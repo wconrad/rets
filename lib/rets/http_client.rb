@@ -1,5 +1,6 @@
 module Rets
   class HttpClient
+    class TimeoutError < RuntimeError; end;
     attr_reader :http, :options, :logger, :login_url
 
     def initialize(http, options, logger, login_url)
@@ -19,6 +20,8 @@ module Rets
       end
       Client::ErrorChecker.check(res)
       res
+    rescue HTTPClient::ReceiveTimeoutError
+      raise TimeoutError
     end
 
     def http_post(url, params, extra_headers = {})
@@ -30,6 +33,8 @@ module Rets
       end
       Client::ErrorChecker.check(res)
       res
+    rescue HTTPClient::ReceiveTimeoutError
+      raise TimeoutError
     end
 
     def log_http_traffic(method, url, params, headers, &block)
