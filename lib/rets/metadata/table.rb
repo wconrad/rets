@@ -112,6 +112,10 @@ module Rets
 
         multi? ? values.map {|v| v.to_s.strip } : values.first.to_s.strip
       end
+
+      def unresolve(long_value)
+        lookup_types.detect {|lt| lt.long_value == long_value }.value
+      end
     end
   end
 end
