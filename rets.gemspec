@@ -26,6 +26,7 @@ Gem::Specification.new do |s|
 
     if Gem::Version.new(Gem::VERSION) >= Gem::Version.new('1.2.0') then
       s.add_runtime_dependency(%q<httpclient>, ["~> 2.6"])
+      s.add_runtime_dependency(%q<http-cookie>, ["~> 1.0"])
       s.add_runtime_dependency(%q<nokogiri>, ["~> 1.5"])
       s.add_development_dependency(%q<rdoc>, ["~> 4.0"])
       s.add_development_dependency(%q<mocha>, ["~> 0.11"])
@@ -34,6 +35,7 @@ Gem::Specification.new do |s|
       s.add_development_dependency(%q<hoe>, ["~> 3.6"])
     else
       s.add_dependency(%q<httpclient>, ["~> 2.6"])
+      s.add_dependency(%q<http-cookie>, ["~> 1.0"])
       s.add_dependency(%q<nokogiri>, ["~> 1.5"])
       s.add_dependency(%q<rdoc>, ["~> 4.0"])
       s.add_dependency(%q<mocha>, ["~> 0.11"])
@@ -43,6 +45,7 @@ Gem::Specification.new do |s|
     end
   else
     s.add_dependency(%q<httpclient>, ["~> 2.6"])
+    s.add_dependency(%q<http-cookie>, ["~> 1.0"])
     s.add_dependency(%q<nokogiri>, ["~> 1.5"])
     s.add_dependency(%q<rdoc>, ["~> 4.0"])
     s.add_dependency(%q<mocha>, ["~> 0.11"])
