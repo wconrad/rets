@@ -1,6 +1,9 @@
+require 'http-cookie'
 require 'httpclient'
 require 'logger'
+
 require_relative 'http_client'
+require_relative 'cookie_manager'
 
 module Rets
   class HttpError < StandardError ; end
@@ -45,7 +48,11 @@ module Rets
         @http.receive_timeout = @options[:receive_timeout]
       end
 
-      @http.set_cookie_store(options[:cookie_store]) if options[:cookie_store]
+      if options[:redis]
+        @http.cookie_manager = Rets::CookieManager.new(@options)
+      elsif options[:cookie_store]
+        @http.set_cookie_store(options[:cookie_store])
+      end
 
       @http_client = Rets::HttpClient.new(@http, @options, @logger, @login_url)
       if options[:http_timing_stats_collector]
