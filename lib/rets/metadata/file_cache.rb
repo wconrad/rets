@@ -20,7 +20,7 @@ module Rets
         File.open(@path, "rb") do |file|
           Marshal.load(file)
         end
-      rescue IOError => e
+      rescue IOError, SystemCallError
         nil
       end
     end
