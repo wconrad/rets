@@ -51,7 +51,7 @@ module Rets
 
       # Metadata can be unmarshalled from cache. @logger is not set during that process, constructor is not called.
       # Client code must set it after unmarshalling.
-      attr_reader :logger
+      attr_accessor :logger
 
       # fetcher is a proc that inverts control to the client to retrieve metadata
       # types
@@ -65,6 +65,10 @@ module Rets
       def marshal_dump
         sources
       end
+
+      def marshal_load(sources)
+        @sources = sources
+      end        
 
       def version
         metadata_types[:system].first.version

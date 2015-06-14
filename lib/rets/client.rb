@@ -18,6 +18,7 @@ module Rets
       @tries           = nil
       @login_url       = options[:login_url]
       @cached_metadata = options[:metadata]
+      @metadata_cache  = options.fetch(:metadata_cache) { Metadata::NullCache.new }
       @capabilities    = options[:capabilities]
       @logger          = options[:logger] || FakeLogger.new
       @client_progress = ClientProgressReporter.new(logger, options[:stats_collector], options[:stats_prefix])
@@ -235,7 +236,7 @@ module Rets
 
     def metadata
       return @metadata if @metadata
-
+      @cached_metadata ||= load_cached_metadata
       if cached_metadata && (options[:skip_metadata_uptodate_check] ||
           cached_metadata.current?(capabilities["MetadataTimestamp"], capabilities["MetadataVersion"]))
         client_progress.use_cached_metadata
@@ -243,7 +244,9 @@ module Rets
       else
         client_progress.bad_cached_metadata(cached_metadata)
         @metadata = Metadata::Root.new(logger, retrieve_metadata)
+        @metadata_cache.save(@metadata)
       end
+      @metadata
     end
 
     def retrieve_metadata
@@ -329,5 +332,14 @@ module Rets
         super(IO::NULL)
       end
     end
+
+    private
+
+    def load_cached_metadata
+      metadata = @metadata_cache.load
+      metadata.logger = @logger if metadata
+      metadata
+    end
+    
   end
 end
